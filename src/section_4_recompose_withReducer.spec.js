@@ -82,7 +82,10 @@ const ChatItem = ({message, ...rest}) => <li
   // --------
 
 // --- Chat List components
-const AddMessage = ({newMessage, handleUpdateNewMessage, handleAddNewMessage}) => <input className='message_add' type='text'
+const AddMessage = ({newMessage, handleUpdateNewMessage, handleAddNewMessage}) => <input 
+  key='message_add'
+  className='message_add' 
+  type='text'
   onChange={handleUpdateNewMessage}
   onKeyDown={handleAddNewMessage}
   value={newMessage}
@@ -117,7 +120,7 @@ const ChatList = ({messages, ...rest}) => {
 
 // --------
 
-describe.only('----------- withReducer', () => {
+describe('----------- withReducer', () => {
 
   const stateMessages = [
     {

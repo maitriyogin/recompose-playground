@@ -20,7 +20,7 @@ const ToggleTimeOfDay = ({toggleTimeOfDay, timeOfDay}) => <span
       </span>;
 
 
-describe.only('----------- Recompose HOCS', () => {
+describe('----------- Recompose HOCS', () => {
 
   let props = {
     messageA: 'wake up',
