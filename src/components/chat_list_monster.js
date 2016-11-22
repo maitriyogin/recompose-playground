@@ -7,7 +7,7 @@ import * as actions from '../actions';
 
 class ChatListMonster extends Component{
 
-  _fetchData({requestChats, fetchChats}){
+  _fetchData({requestMessages, fetchChats}){
     requestChats();
     fetchChats();
   }

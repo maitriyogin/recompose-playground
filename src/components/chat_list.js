@@ -1,15 +1,20 @@
 import React, {PropTypes} from 'react';
-import ChatItem from './chat_item'
-const ChatList = ({messages, ...props}) => (
-  <div>
+import ChatItem from './chat_item';
+import AddMessageWithState from './add_message';
 
-    <ul>
-      {messages.map(message => {
-        return <li key={message.id}><ChatItem {...{...props, message}} /></li>
-      })}
+const ChatList = ({messages, ...rest}) => {
+  return <div>
+    <AddMessageWithState {...rest} />
+    <ul className='messages'>
+      {messages.map(
+        message => {
+          return <ChatItem key={`ci-${message.id}`} message={message} {...rest}/>
+        })
+      }
     </ul>
-  </div>
-);
+
+  </div>;
+};
 
 ChatList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.shape({

@@ -1,26 +1,51 @@
 import React from 'react';
-import {compose, withState, withHandlers} from 'recompose';
+import {compose, withProps, branch, renderComponent} from 'recompose';
 
-export const ChatItem = ({state: {isEditing, message}, handleEdit, handleMutateMessage, handleDone}) =>
-  (<span>{
-    !isEditing ?
-      <a href='#' onClick={handleEdit}>{message}</a> :
-      <input value={message} onChange={handleMutateMessage} onKeyDown={handleDone}/> }</span>);
+// --- ChatItem components
+export const EditableChatItem = ({message, handleUpdateMessage}) => <input
+  key={`message_edit_${message.id}`}
+  id={`message_edit_${message.id}`}
+  type='text'
+  value={message.message}
+  onChange={handleUpdateMessage(message.id)}
+  onKeyDown={handleUpdateMessage(message.id)}
+/>;
 
-export default compose(
-  withState('state', 'setState', ({isEditing = false, message: {id, message}}) =>
-    ({isEditing, id, message})),
-  withHandlers({
-    handleEdit: ({state, setState}) => event =>
-      setState({...state, isEditing: true}),
-    handleMutateMessage: ({state, setState}) => event =>
-      setState({...state, message: event.target.value}),
-    handleDone: ({state, setState, updateMessage}) => event => {
-      if (event.which === 13) {
-        console.log(updateMessage);
-        setState({...state, isEditing: false});
-        updateMessage({id: state.id, message: state.message});
-      }
-    }
-  })
-)(ChatItem);
+export const LinkChatItem = ({message, handleEditMessage}) => <a
+  href='#'
+  onClick={handleEditMessage(message.id)}
+  key={`message_${message.id}`}
+  id={`message_${message.id}`}
+>{message.message}</a>;
+
+// --- using branch to do control which component is shown based on the editing state.
+export const BranchedChatItem = compose(
+  withProps(ownProps => ({
+    isEditing: ownProps.message && ownProps.editingState
+    && ownProps.message.id === ownProps.editingState.id
+  })),
+  branch(
+    ({isEditing}) => isEditing,
+    c => c,
+    renderComponent(LinkChatItem)
+  )
+)(EditableChatItem);
+
+export const DeleteChatItem = ({message, handleDeleteMessage}) => <button
+  className='message_delete'
+  key={`message_delete_${message.id}`}
+  id={`message_delete_${message.id}`}
+  onClick={handleDeleteMessage(message.id)}
+>
+  delete
+</button>
+
+export const ChatItem = ({message, ...rest}) => <li
+  id={`message-${message.id}`}
+  key={message.id}
+>
+  <BranchedChatItem message={message} {...rest} />
+  <DeleteChatItem message={message} {...rest}/>
+</li>;
+
+  export default ChatItem;

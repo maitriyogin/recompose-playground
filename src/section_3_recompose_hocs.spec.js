@@ -28,6 +28,7 @@ describe('----------- Recompose HOCS', () => {
     messageC: 'bagpuss oh here what I sing!',
     character: 'gumball'
   };
+  
   it('mapProps', () => {
     const Composed = compose(
       mapProps(

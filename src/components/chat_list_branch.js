@@ -5,7 +5,7 @@ import Waiting from './waiting';
 
 export default
   branch(
-    ({chats}) => !chats || chats.length === 0,
+    ({messages}) => !messages || messages.length === 0,
     () => props => <Waiting {...props} />,
     () => props => <ChatList {...props} />
   )(bc => props => bc);

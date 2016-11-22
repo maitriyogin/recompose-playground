@@ -3,7 +3,7 @@ import { compose, withHandlers, withReducer, withState, withProps, branch, rende
 import { v4 } from 'node-uuid';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
-import R from 'ramda'
+
 // --- actions
 // --- messages
 const updateMessage = (id, message) => ({
@@ -110,15 +110,13 @@ const ChatList = ({messages, ...rest}) => {
     <ul className='messages'>
     {messages.map(
       message => {
-        return <ChatItem message={message} {...rest}/>
+        return <ChatItem key={`ci-${message.id}`} message={message} {...rest}/>
       })
     }
     </ul>
     
     </div>;
-}
-
-// --------
+};
 
 describe('----------- withReducer', () => {
 
@@ -175,7 +173,7 @@ describe('----------- withReducer', () => {
                 message: action.message
               }];
             case 'RECEIVE_MESSAGES':
-              return action.response;
+              return [...action.messages];
             default:
               return state;
           }
