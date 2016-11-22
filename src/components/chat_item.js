@@ -5,6 +5,7 @@ import {compose, withProps, branch, renderComponent} from 'recompose';
 export const EditableChatItem = ({message, handleUpdateMessage}) => <input
   key={`message_edit_${message.id}`}
   id={`message_edit_${message.id}`}
+  className='chat_item--editable'
   type='text'
   value={message.message}
   onChange={handleUpdateMessage(message.id)}
@@ -14,6 +15,7 @@ export const EditableChatItem = ({message, handleUpdateMessage}) => <input
 export const LinkChatItem = ({message, handleEditMessage}) => <a
   href='#'
   onClick={handleEditMessage(message.id)}
+  className='chat_item--link'
   key={`message_${message.id}`}
   id={`message_${message.id}`}
 >{message.message}</a>;
@@ -43,6 +45,7 @@ export const DeleteChatItem = ({message, handleDeleteMessage}) => <button
 export const ChatItem = ({message, ...rest}) => <li
   id={`message-${message.id}`}
   key={message.id}
+  className='chat_item'
 >
   <BranchedChatItem message={message} {...rest} />
   <DeleteChatItem message={message} {...rest}/>

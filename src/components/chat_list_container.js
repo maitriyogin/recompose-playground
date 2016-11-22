@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import { compose, withHandlers, withReducer, lifecycle} from 'recompose';
-import {chatSelectors} from '../reducers';
+import {messageSelectors} from '../reducers';
 import {list, editing, isFetching, stateMessage, stateMessages, requestState} from '../reducers/messages';
 import ChatListBranch from './chat_list_branch';
 import {updateMessage, addMessage, deleteMessage, receiveMessages, editMessage, clearEditMessage, fetchChats, requestMessages} from '../actions';
@@ -14,7 +14,8 @@ const ChatListContainer = props =>
   </div>;
 
 const mapStateToProps = (state, {params}) => ({
-  chats: chatSelectors.getMessages(state)
+  messages: messageSelectors.getMessages(state),
+  isFetching: messageSelectors.getIsFetching(state)
 });
 
 const _lifecycle = lifecycle({

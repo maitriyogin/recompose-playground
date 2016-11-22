@@ -82,7 +82,7 @@ const ChatItem = ({message, ...rest}) => <li
   // --------
 
 // --- Chat List components
-const AddMessage = ({newMessage, handleUpdateNewMessage, handleAddNewMessage}) => <input 
+const AddMessage = ({newMessage = '', handleUpdateNewMessage, handleAddNewMessage}) => <input 
   key='message_add'
   className='message_add' 
   type='text'
