@@ -79,7 +79,6 @@ const ChatItem = ({message, ...rest}) => <li
     <BranchedChatItem message={message} {...rest} />
     <DeleteChatItem message={message} {...rest}/>
   </li>;
-  // --------
 
 // --- Chat List components
 const AddMessage = ({newMessage = '', handleUpdateNewMessage, handleAddNewMessage}) => <input 
@@ -94,9 +93,10 @@ const AddMessage = ({newMessage = '', handleUpdateNewMessage, handleAddNewMessag
 const AddMessageWithState = compose(
   withState('newMessage', 'setNewMessage', undefined),
   withHandlers({
-    handleUpdateNewMessage: ({newMessage, setNewMessage}) => event => setNewMessage(event.target.value),
-    handleAddNewMessage: ({newMessage, dispatchToMessages, dispatchToMessage}) => event => {
-      console.log('--- add new message', newMessage);
+    handleUpdateNewMessage: ({newMessage, setNewMessage}) => 
+      event => setNewMessage(event.target.value),
+    handleAddNewMessage: ({newMessage, dispatchToMessages, dispatchToMessage}) => 
+      event => {
       if (event.which === 13) {
         dispatchToMessages(addMessage(newMessage))
       }

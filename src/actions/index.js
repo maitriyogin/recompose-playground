@@ -45,7 +45,5 @@ export const clearEditMessage = () => ({
 
 // thunks
 export const fetchChats = () =>
-  api.fetchChats().then(response =>
-    receiveMessages(response)
-  );
+  api.fetchChats().then(response => response);
 

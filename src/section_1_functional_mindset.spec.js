@@ -113,6 +113,8 @@ describe('------------ Function', () => {
     // addition of sorting ... 
     // cons : great but could be more symantic 
     // pros: now using standard method!
+    // This is a huge step forward although ... we can get caught up in 
+    // iterative hell! i.e the deep chaining of map.reduce.sort etc
     const show = 'gumball';
     const result = favs.filter(val => val.show === show).sort((a, b) => {
       if (a.character < b.character) return -1;

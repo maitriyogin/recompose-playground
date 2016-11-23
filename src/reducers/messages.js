@@ -31,9 +31,9 @@ export const requestState = {
 };
 
 export const list = (state = [], action) => {
-  console.log('-------------- messages');
-  console.log('--- action', action);
-  console.log('-----------------------');
+  // console.log('-------------- messages');
+  // console.log('--- action', action);
+  // console.log('-----------------------');
   switch (action.type) {
     case 'REQUEST_MESSAGES':
       return [...state];
@@ -45,7 +45,7 @@ export const list = (state = [], action) => {
     case 'DELETE_MESSAGE':
       return state.filter(message => message.id !== action.id);
     case 'ADD_MESSAGE':
-      console.log('---add message', action);
+      // console.log('---add message', action);
       return [...state, {
         id: v4(),
         message: action.message
@@ -59,9 +59,9 @@ export const list = (state = [], action) => {
 };
 
 export const editing = (state = stateMessage, action) => {
-  console.log('-------------- editingMessage');
-  console.log('--- action', action);
-  console.log('-----------------------');
+  // console.log('-------------- editingMessage');
+  // console.log('--- action', action);
+  // console.log('-----------------------');
   switch (action.type) {
     case 'EDIT_MESSAGE':
       return {
@@ -80,9 +80,9 @@ export const editing = (state = stateMessage, action) => {
 };
 
 export const isFetching = (state = true, action) => {
-  console.log('-------------- isFetching');
-  console.log('--- action', action);
-  console.log('-----------------------');
+  // console.log('-------------- isFetching');
+  // console.log('--- action', action);
+  // console.log('-----------------------');
   switch (action.type) {
     case 'REQUEST_MESSAGES':
       return true;

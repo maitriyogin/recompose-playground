@@ -13,11 +13,7 @@ const CompA = ({messageA, character, children}) => <div>
 const CompB = ({messageB, children}) => <div>{messageB}{children}</div>;
 const CompC = ({messageC, children, character}) => <div>{character && <h1 id='character'>character</h1>}{messageC}{children}</div>;
 
-const ToggleTimeOfDay = ({toggleTimeOfDay, timeOfDay}) => <span
-  className='toggle'
-  onClick={toggleTimeOfDay(timeOfDay)}>
-        {timeOfDay}
-      </span>;
+
 
 
 describe('----------- Recompose HOCS', () => {
@@ -28,7 +24,7 @@ describe('----------- Recompose HOCS', () => {
     messageC: 'bagpuss oh here what I sing!',
     character: 'gumball'
   };
-  
+
   it('mapProps', () => {
     const Composed = compose(
       mapProps(
@@ -135,7 +131,12 @@ describe('----------- Recompose HOCS', () => {
 
   it('withState and withHandlers', () => {
     // Handlers are passed to the base component as immutable props, whose identities are preserved across renders. This avoids a common pitfall where functional components create handlers inside the body of the function, which results in a new handler on every render and breaks downstream shouldComponentUpdate() optimizations that rely on prop equality.
-
+    const ToggleTimeOfDay = ({toggleTimeOfDay, timeOfDay}) => <span
+      className='toggle'
+      onClick={toggleTimeOfDay(timeOfDay)}>
+        {timeOfDay}
+      </span>;
+    
     const Composed = compose(
       withState('timeOfDay', 'setTimeOfDay', 'night'),
       withHandlers({

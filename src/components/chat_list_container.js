@@ -2,10 +2,11 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import { compose, withHandlers, withReducer, lifecycle} from 'recompose';
+import * as api from '../api';
 import {messageSelectors} from '../reducers';
-import {list, editing, isFetching, stateMessage, stateMessages, requestState} from '../reducers/messages';
+// import {list, editing, isFetching, stateMessage, stateMessages, requestState} from '../reducers/messages';
 import ChatListBranch from './chat_list_branch';
-import {updateMessage, addMessage, deleteMessage, receiveMessages, editMessage, clearEditMessage, fetchChats, requestMessages} from '../actions';
+import * as actions from '../actions';
 
 const ChatListContainer = props =>
   <div style={{margin: '40px'}}>
@@ -15,7 +16,8 @@ const ChatListContainer = props =>
 
 const mapStateToProps = (state, {params}) => ({
   messages: messageSelectors.getMessages(state),
-  isFetching: messageSelectors.getIsFetching(state)
+  isFetching: messageSelectors.getIsFetching(state),
+  editingState: state.messages.editing
 });
 
 const _lifecycle = lifecycle({
@@ -28,36 +30,36 @@ const _lifecycle = lifecycle({
 
 export default compose(
   withRouter,
-  withReducer('messages', 'dispatchToMessages',
-    list, []),
-  withReducer('editingState', 'dispatchToMessage',
-    editing, stateMessage),
-  withReducer('isFetching', 'dispatchToIsFetching',
-    isFetching, false),
+  // withReducer('messages', 'dispatchToMessages',
+    // list, []),
+  // withReducer('editingState', 'dispatchToMessage',
+    // editing, stateMessage),
+  // withReducer('isFetching', 'dispatchToIsFetching',
+    // isFetching, false),
+  connect(
+    mapStateToProps,
+    actions
+  ),
   withHandlers({
-      handleAddMessage: ({dispatchToMessages}) => newMessage => dispatchToMessages(addMessage(newMessage)),
-      handleUpdateMessage: ({dispatchToMessages, dispatchToMessage}) => id => event => {
+      handleAddMessage: ({addMessage}) => newMessage => addMessage(newMessage),
+      handleUpdateMessage: ({clearEditMessage, updateMessage}) => id => event => {
         if (event.which === 13) {
-          dispatchToMessage(clearEditMessage());
+          // dispatchToMessage(clearEditMessage());
+          clearEditMessage();
         } else {
-          dispatchToMessages(updateMessage(id, event.target.value))
+          updateMessage(id, event.target.value);
         }
       },
-      handleDeleteMessage: ({dispatchToMessages}) => id => () => dispatchToMessages(deleteMessage(id)),
-      handleEditMessage: ({dispatchToMessage}) => id => () => dispatchToMessage(editMessage(id)),
-      handleRequestChats: ({dispatchToIsFetching, dispatchToMessages}) => () => {
-        dispatchToIsFetching(requestMessages());
-        fetchChats().then(actionReceiveMessages => {
-          dispatchToMessages(actionReceiveMessages);
-          dispatchToIsFetching(actionReceiveMessages);
+      handleDeleteMessage: ({deleteMessage}) => id => () => deleteMessage(id),
+      handleEditMessage: ({editMessage}) => id => () => editMessage(id),
+      handleRequestChats: ({requestMessages, receiveMessages}) => () => {
+        requestMessages();
+        api.fetchChats().then(messages => {
+          receiveMessages(messages);
         })
       }
     }
   ),
-  _lifecycle
-  // connect(
-  //   mapStateToProps,
-  //   actions
-  // ),
-  // _lifecycle,
+
+  _lifecycle,
 )(ChatListContainer);
